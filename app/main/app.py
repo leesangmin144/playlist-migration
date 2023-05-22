@@ -21,7 +21,7 @@ def getSpotifyAccessToken():
     
 @app.route("/appletest")
 def getAppleAccessTokenTest():
-    
+    pass
 
 @app.route("/spotify/fetch/playlist")
 def fetchPlaylistFromSpotify():
