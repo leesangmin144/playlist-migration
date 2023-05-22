@@ -2,19 +2,26 @@ from flask import Flask, abort, json, render_template, request
 from spotify.client_credential import SpotifyOAuth
 from spotify.api import SpotifyAPI
 
-CLIENT_ID = b""
-CLIENT_SECRET = b""
+SPOTIFY_CLIENT_ID = b""
+SPOTIFY_CLIENT_SECRET = b""
+
+APPLE_CLIENT_ID = b""
+APPLE_CLIENT_SECRET = b""
 
 app = Flask(__name__)
 
 def getSpotifyAccessToken():
-    so = SpotifyOAuth(CLIENT_ID, CLIENT_SECRET)
+    so = SpotifyOAuth(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
     accessToken = so.clientCredential()
 
     if (accessToken["token_type"] != "Bearer"):
         return None
     else:    
         return accessToken["access_token"]
+    
+@app.route("/appletest")
+def getAppleAccessTokenTest():
+    
 
 @app.route("/spotify/fetch/playlist")
 def fetchPlaylistFromSpotify():
@@ -51,8 +58,11 @@ if __name__ == '__main__':
         with open("credentials.txt") as f:
             creds = json.loads(f.read().strip())   
 
-            CLIENT_ID = creds["CLIENT_ID"]
-            CLIENT_SECRET = creds["CLIENT_SECRET"]     
+            SPOTIFY_CLIENT_ID = creds["spotify"]["CLIENT_ID"]
+            SPOTIFY_CLIENT_SECRET = creds["spotify"]["CLIENT_SECRET"]    
+
+            APPLE_CLIENT_ID = creds["apple"]["CLIENT_ID"]
+            APPLE_CLIENT_SECRET = creds["apple"]["CLIENT_SECRET"] 
     except FileNotFoundError:
         print("The file does not exist.")
     except PermissionError:
